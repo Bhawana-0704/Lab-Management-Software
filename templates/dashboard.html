@@ -1,0 +1,367 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<style>
+  .menu1{
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .drop-down-container label{
+        font-family: consolas;
+        padding-right: 10px;
+    }
+
+    /* Full-width input fields */
+    .drop-down-container input[type=text]{
+      font-family: consolas;
+      padding: 5px;
+      margin: 5px 0px 0px 0;
+      border: none;
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    /* When the inputs get focus, do something */
+    .drop-down-container input[type=text]:focus{
+      background-color: #fcfcfc;
+      outline: none;
+    }
+
+    select{
+      font-family: arial;
+      padding: 5px;
+      background-color: rgba(255, 255, 255, 0.7);
+      margin-top: 10px;
+      font-size: 14px;
+      border: none;
+    }
+
+    select:focus{
+      border: none;
+      outline: none;
+    }
+
+    .form-popup {
+  font-family: times new roman;
+  display: none;
+  position: fixed;
+  transform: translate(20%, 10%);
+  /*bottom: 0;
+  right: 15px;*/
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+  border-radius: 12px 12px  12px 12px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+
+}
+
+.form-container {
+  height: 60vh;
+  max-width: 47vw;
+  padding: 30px;
+  background-color: white;
+
+}
+
+.form-container label{
+    font-family: arial;
+    padding-right: 10px;
+}
+
+.form-container input[type=text]{
+  font-family: consolas;
+  padding: 9px;
+  margin: 5px 0px 19px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+.form-container input[type=text]:focus, {
+  background-color: #ddd;
+  outline: none;
+}
+
+.form-container .btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+.form-container .cancel {
+  background-color: red;
+}
+
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+    <div>
+        <h5 style="padding-left: 10px ;margin-top: 20px; font-size: 25px ;color:#2E2E2E; font-family: consolas;">Welcome {{session['username'] | capitalize}}</h5>
+          
+        <h5 style=" margin-top: -40px;padding-left: 10px ;font-size: 16px ;color:#2E2E2E; font-family: courier;">All systems are running smoothly.</h5>      
+    </div>
+
+    <div style="position: fixed; top: 26vh">
+
+        <!-- <div class="timecon" style="width: 330px; height:220px">
+            <div style="float: right;">
+                <div style="float:right; font-family: consolas; padding-right: 15px; padding-top:25px; font-weight: bold; font-size:20px;">Bengaluru<br><small>India</small>
+                </div>
+                <span><i class="fa fa-cloud" style="display: inline-block; padding-right: 10px; font-size: 20px; color:#2e2e2e"></i><h1 id="degcel" style="display: inline-block;font-family: consolas ;padding-right: 10px;">N/A</h1></span>
+            </div>
+        </div> -->
+
+            <div style="position: fixed; display:inline-block; ">
+                <div style="background-color: #ff9999;width: 32vw; height: 33vh; border-radius: 12px 12px 12px 12px; margin-left: 10px; display: inline-block;">
+              
+                <h2 style="color: white;border-radius: 12px 12px 0 0 ;margin-top: 0px;text-align: center; padding-top:0px; font-family:consolas; font-size: 20px; background: rgba(0, 0, 0, 0.2); line-height: 50px;">Meeting Set-Up</h2>
+                
+                <hr size=3 color="#d9d9d9" style="margin-top:-20px">
+                
+                {% if data[6] == 'notset' %}
+                  
+                  {% if data[5]|length >0 %}
+                    <form action="{{url_for('gmeet')}}" method="post" style="margin: 8px; background: rgba(255, 255, 255, 0.5); border-radius: 2px 2px 12px 12px;padding: 14px; position: fixed; width: 28.5vw" class="drop-down-container">
+
+                        <label for="evename"><b>For Event:</b></label>
+                        <select name="evename" style="margin-left: 5px;">
+                          {% for event in data[5] %}
+                            <option value="{{event[0]}}">{{event[0]}}</option>
+                          {% endfor %}
+                        </select>
+                        <br>
+                        <label for="meetlink" style="position: relative;top:10px"><b>Meet link:</b></label>
+                        <input type="text" name="meetlink" required style="width: 19vw; margin-left: 5px; position: relative;top:10px">
+
+                        <a style="position: relative; top: -135px; left:53vh;"><input type="submit" value="Set" style="font-size: 14px; font-family: consolas; font-weight: bolder; cursor: pointer; padding-left:5px; padding-right: 25px; padding-top: 3px; padding-bottom: 3px; border: 1 px solid seagreen; background-color: rgba(255, 255, 255, 0.7); border-radius: 6px 6px 6px 6px;"><i class="fa fa-thumbs-o-up" style="position: relative; left: -3vh; top: 0vh; z-index: 0; font-size: 12px"></i>
+                        </a>
+                    </form>
+                  {% else %}
+                    <h3 style="text-align:center; font-family: gothic; color: #fcfcfc; margin-top:15px">No events in the Calendar</h3>                
+                    <h4 style="text-align:center; font-family: gothic; color: #fcfcfc; margin-top: -10px;">You might want to <a href="{{url_for('calendar')}}">set an ATL event</a> first?</h4>
+                  {% endif %}
+
+                {% elif data[6] == 'set' %}
+                      <h3 style="text-align:center; font-family: gothic; color: #fcfcfc; margin-top:15px">A meeting link has already been set</h3>
+
+                      <h4 style="text-align:center; font-family: gothic; color: #fcfcfc; margin-top: -10px;">Remove current meeting?</h4>
+
+                      <form action="{{url_for('remove_gmeet')}}" method="post" >
+                        <a style="position: relative; top:-10px; left:29vh;"><input type="submit" value="Remove" style="font-size: 15px; font-family: consolas; font-weight: bolder; cursor: pointer; padding-left:5px; padding-right: 25px; padding-top: 2px; padding-bottom: 2px; border: 1 px solid seagreen; background-color: rgba(255, 255, 255, 0.7); border-radius: 6px 6px 6px 6px"><i class="fa fa-remove" style="position: relative; left: -3vh"></i></a>
+                      </form>
+                {% endif %}
+            </div>
+                
+
+            <div style="position: fixed; background-color: #80aaff; width: 15vw; height: 33vh; border-radius: 12px 12px 12px 12px; margin-left: 10px; display: inline-block;">
+                <h2 style="color: white;border-radius: 12px 12px 0 0 ;margin-top: 0px;text-align: center; padding-top:0px; font-family:consolas; font-size: 20px; background: rgba(0, 0, 0, 0.2); line-height: 50px;">ATL Events</h2>
+                <hr size=3 color="#d9d9d9" style="margin-top:-20px">
+                <div style="height:22vh; width:92%; background: rgba(255, 255, 255, 0.5); margin-left: 7px; border-radius: 0px 0px 10px 10px;">
+                    <table style="margin:5px; font-family: consolas; font-size: 16px">
+                      <tr><td style="padding:5px"><u>Today</u></td><td style="padding:5px">: {{data[1]}}</td></tr>
+                      <tr><td style="padding:5px"><u>This week</u></td><td style="padding:5px">: {{data[3]}}</td></tr>
+                      <tr><td style="padding:5px"><u>This month</u></td><td style="padding:5px">: {{data[2]}}</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <div style="position: fixed; background-color: #ffcc99; width: 23vw; height: 60vh; border-radius: 12px 12px 12px 12px; margin-left: 40vh; display: inline-block;">
+                <h2 style="color: white; border-radius: 12px 12px 0 0 ;margin-top: 0px;text-align: center; padding-top:0px; font-family:consolas; font-size: 20px; background: rgba(0, 0, 0, 0.2); line-height: 50px;">Equipments low on Q(N)</h2>
+                <hr size=3 color="#d9d9d9" style="margin-top:-20px">
+                <div style="overflow-y: auto; height:50vh; width:100%;">
+                    {% if data[4]|length > 0 %}
+                      <table style="margin:5px; /*background: rgba(255, 255, 255, 0.7);*/ font-family:consolas;">
+                        <tr>
+                            <th  style="margin: 2px; background: rgba(255, 255, 255, 0.5); padding-left: 4px; padding-right: 4px;">Code</th>
+                            <th  style="margin: 2px; background: rgba(255, 255, 255, 0.5); padding-left: 4px; padding-right: 4px;">Name</th>
+                            <th  style="margin: 2px; background: rgba(255, 255, 255, 0.5); padding-left: 4px; padding-right: 4px;">Active Q(N)</th>
+                        </tr>
+                        {% for stuff in data[4] %}
+                            <tr style="font-size: 14px;">
+                                <td style="margin: 2px; background: rgba(255, 255, 255, 0.4); padding-left: 4px; padding-right: 4px;">{{stuff[0]}}</td>
+                                <td style="margin: 2px; background: rgba(255, 255, 255, 0.5); padding-left: 4px; padding-right: 4px;">{{stuff[1]}}</td>
+                                <td style="text-align: center; margin: 2px; background: rgba(255, 255, 255, 0.5); padding-left: 4px; padding-right: 4px;">{{stuff[2]}}</td>
+                            </tr>
+                        {% endfor %}
+                      </table>
+                    {% else %}
+                        <img src="{{'static/'+ 'nothing2.gif'}}" width="60%" style="transform: translate(30%, 0%);">
+                        <h4 style="font-family: consolas; text-align: center; margin-top: 0px;">Everything in stock!</h4>
+                    {% endif %}
+                  </div>
+              </div>
+
+
+      </div>
+      <hr size=3 color="#aeaeae" style="padding-right: 20px; position: fixed; top: 60vh; width: 95vh; margin-left: 20px">
+
+    </div>
+
+
+    <div style="background-color: #f2f2f2; position: fixed; top: 64vh; ">
+
+        <div style="position: fixed; background-color: #b380ff;width:15vw; height: 33vh; border-radius: 12px 12px 12px 12px; margin-left: 10px; display: inline-block;">
+                <h2 style="color:white;border-radius: 12px 12px 0 0 ;margin-top: 0px;text-align: center; padding-top:0px; font-family:consolas; font-size: 20px; background: rgba(0, 0, 0, 0.2); line-height: 50px;">Pending Requests</h2>
+                <hr size=3 color="#d9d9d9" style="margin-top:-20px">
+                <span style="background: rgba(0, 0, 0, 0.1) ;position: absolute; padding: 6px 36px; margin-top: 15px;margin-left: 45px; border-radius: 50%; box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.3);"><h1 style="text-align: center; font-family: consolas; color: #fcfcfc">{{data[0]}}</h1></span>
+        </div>
+
+        
+        <div style="position: fixed; background-color: #11faa5; width: 32vw; height: 33vh; border-radius: 12px 12px 12px 12px; margin-left: 35vh;">
+          
+            <h2 style="color: white;border-radius: 12px 12px 0 0 ;margin-top: 0px;text-align: center; padding-top:0px; font-family:consolas; font-size: 20px; background: rgba(0, 0, 0, 0.2); line-height: 50px;">Report Download Section</h2>
+            
+            <hr size=3 color="#d9d9d9" style="margin-top:-20px">
+            
+            
+              <form action="{{url_for('report')}}" method="post" style="margin: 0.7vw; margin-top: -1vh; background: rgba(255, 255, 255, 0.5); border-radius: 2px 2px 12px 12px;">
+
+                  <h2 style="border-radius: 12px 12px 0 0; text-align: center; font-family:consolas; font-size: 17px; padding-top:5px">Choose from the available reports: -</h2>
+
+                  <label for="tabname" style="margin-left: 20px"><b>Report of:</b></label>
+                  <select name="tabname" style="margin-left: 0px;">
+                    {% for event in data[7] %}
+                      <option value="{{event}}">{{event}}</option>
+                    {% endfor %}
+                  </select>
+
+                  <br>
+
+                  <label for="format" style="margin-left: 20px"><b>Format as:</b></label>
+                  <select name="format" style="margin-left: 0px;">
+                      <option value="csv">csv</option>
+                      <option value="fancy">fancy</option>
+                  </select>
+
+                  <br>
+
+                  <a style="position: relative; top:-4vh; left:43vh;"><input type="submit" value="Download" style="font-size: 14px; font-family: consolas; font-weight: bolder; cursor: pointer; padding-left:5px; padding-right: 25px; padding-bottom: 2px; border: 1 px solid seagreen; background-color: rgba(255, 255, 255, 0.7); border-radius: 6px 6px 6px 6px"><i class="fa fa-download" style="position: relative; left:-20px"></i></a>
+
+              </form>
+              
+        </div>
+        <div style="position: fixed; background-color: #80aaff;width:23vw; height: 8vh; border-radius: 12px 12px 12px 12px; margin-left: 52vw; display: inline-block; margin-top: 24vh;">
+                <h2 style="color:white;border-radius: 12px 12px 12px 12px ;margin-top: 0px;text-align: left; padding-left:15px; font-family:consolas; font-size: 18px; background: rgba(0, 0, 0, 0.2); line-height: 8vh;">Edit what`s new section</h2>
+                <i class="fa fa-external-link" style="position: relative; top:-7.5vh; left:44vh; color: black; font-weight: bolder; font-size: 18px; cursor: pointer;" onclick="openForm(this)"></i>
+
+                
+        </div>
+
+    </div>
+    <div style="position: absolute; top: 14%; border: 1;height: 83%; width: 78%; display: none; background: rgba(0, 0, 0, 0.5); box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;" id="division">
+    <div class="form-popup" id="myForm" >
+        <div class="form-container">
+            <h2 style="text-align:center; margin-top: 0px; color:#2E2E2E;">What`s new section</h2>
+
+            <div style="height:50vh; width:43vw;">
+                <hr size=3 color="#aeaeae" style="padding-right: 20px; position: fixed; margin-top: -10px; width: 41.5vw;">
+
+                <h3 style="text-align:left; color:#4C2ED5;margin-top: -1vh">Existing notifications</h3>
+                  
+                        <tbody>
+                            <!-- <td> -->
+                                <div style="overflow-y: scroll; overflow-x: hidden; height: 16vh; width:44vw; margin-top: -2vh">
+                                    <table>
+                                        {% for stuff in data[8] %}
+                                                <tr style="font-size: 16px;">
+                                                    {% if stuff[1] != None %}
+                                                        <td style="margin: 2px; background: rgba(255, 255, 255, 0.4); padding-left: 4px; padding-right: 4px; width: 80vh"><li><a href="{{stuff[1]}}" target="_blank">{{stuff[2]}}</a></li> 
+                                                        </td>
+                                                    {% else %}
+                                                        <td style="margin: 2px; background: rgba(255, 255, 255, 0.4); padding-left: 4px; padding-right: 4px; width: 80vh"><li><a>{{stuff[2]}}</a></li> 
+                                                        </td>
+                                                    {% endif %}
+
+                                                    <td style="margin: 2px; background: rgba(255, 255, 255, 0.4); padding-left: 4px; padding-right: 4px;">
+                                                        <form action="{{url_for('delete_notif', id=stuff[0]  )}}" method="post">
+                                                            <input type="submit" value="Delete" style="font-size: 14px; font-family: consolas; font-weight: bolder; cursor: pointer; padding-left:5px; padding-right: 25px; padding-top: 3px; padding-bottom: 3px; border: 1 px solid seagreen; background-color: rgba(255, 255, 255, 0.7); border-radius: 6px 6px 6px 6px;">
+                                                        </form> 
+                                                    </td>
+                                                </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                            <!-- </td> -->
+                        </tbody>
+
+            
+
+
+                    <hr size=3 color="#aeaeae" style="padding-right: 20px; position: fixed; margin-top: 20px; width: 41.5vw;">
+
+                    <h3 style="text-align:left; color:#4C2ED5; margin-top: 30px;">Add a new notification</h3>
+
+                    <form action="{{url_for('add_notif')}}" method="post" style="margin-top: -10px; background: rgba(255, 255, 255, 0.5); border-radius: 2px 2px 12px 12px; position: fixed; height: 25vh; width: 41.5vw;" class="drop-down-container">
+
+                        <label for="type">Type:</label>
+                        <select name="type" style="margin-left: 5px;" id="selectwhat">
+                            <option value="link">Link</option>
+                            <option value="plaintext">Plain text</option>
+                        </select>
+                        <br>
+                        <label for="notification" style="position: relative;top:10px">Notification:</label>
+                        <input type="text" name="notification" required style="width: 32vw;; margin-left: 5px; position: relative;top:10px">
+
+                        <label for="thelink" style="position: relative;top:0px" id="displaywhat">Link:</label>
+                        <input type="text" name="thelink" required style="width: 29.5vw; margin-left: 5px; position: relative;top:0px; margin-right: 20px" id="displaywhat2">
+
+
+                        <a style="position: relative; top: 0vh; right:0vh;"><input type="submit" value="Add" style="font-size: 14px; font-family: consolas; font-weight: bolder; cursor: pointer; padding-left:5px; padding-right: 25px; padding-top: 3px; padding-bottom: 3px; border: 1 px solid seagreen; background-color: rgba(255, 255, 255, 0.7); border-radius: 6px 6px 6px 6px;">
+                        </a>
+                    </form>
+
+              
+            </div>
+
+        
+            <i type="button" class="fa fa-close" onclick="closeForm()" style="position: fixed; top: 15px; right: 15px; border-radius: 24px; cursor: pointer; background: rgba(0, 0, 0, 0.5); color: #f2f2f2; padding: 10px 12px;"></i>
+        </div>
+    </div>
+    </div>
+
+    <script type="text/javascript">
+        function openForm(id) {
+          document.getElementById("myForm").style.display = "block";
+          document.getElementById("division").style.display = "block";
+
+          // document.getElementsByName("item_name")[0].value = id.closest('tr').cells[1].innerHTML;
+          // document.getElementsByName("location")[0].value = id.closest('tr').cells[3].innerHTML;
+          // document.getElementsByName("quantity")[0].value = id.closest('tr').cells[2].innerHTML;
+          // document.getElementsByName("specification")[0].value = id.closest('tr').cells[4].innerHTML;
+          // document.getElementsByName("extras")[0].value = id.closest('tr').cells[5].innerHTML;
+          // document.getElementsByName("code")[0].value = id.closest('tr').cells[0].innerHTML;
+
+        }
+
+        function closeForm() {
+          document.getElementById("myForm").style.display = "none";
+          document.getElementById("division").style.display = "none";
+          document.getElementById("myForm2").style.display = "none";
+          document.getElementById("division2").style.display = "none";
+        }
+
+
+        var selected = document.getElementById("selectwhat");
+        selected.onchange=function(){
+        if(selected.value=="link"){
+           document.getElementById("displaywhat").style.display="inline";
+           document.getElementById("displaywhat2").style.display="inline";
+        }else{
+           document.getElementById("displaywhat").style.display="none";
+           document.getElementById("displaywhat2").style.display="none";
+        }
+        }
+
+    </script>
+        
+{% endblock%}
